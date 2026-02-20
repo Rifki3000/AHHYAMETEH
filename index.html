@@ -1,0 +1,2965 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Love Story - SMA Negeri 1</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&amp;family=Caveat:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Quicksand', sans-serif; }
+    .title-font { font-family: 'Caveat', cursive; }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(255, 105, 180, 0.3); }
+      50% { box-shadow: 0 0 40px rgba(255, 105, 180, 0.6); }
+    }
+    
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      25% { transform: scale(1.1); }
+      50% { transform: scale(1); }
+      75% { transform: scale(1.1); }
+    }
+    
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    
+    @keyframes blink {
+      0%, 50%, 100% { opacity: 1; }
+      25%, 75% { opacity: 0; }
+    }
+    
+    @keyframes sakura-fall {
+      0% { transform: translateY(-10%) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110%) rotate(360deg); opacity: 0; }
+    }
+    
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes slide-up {
+      from { opacity: 0; transform: translateY(50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes character-enter-left {
+      from { opacity: 0; transform: translateX(-100px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    
+    @keyframes character-enter-right {
+      from { opacity: 0; transform: translateX(100px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    
+    @keyframes blush {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.7; }
+    }
+    
+    @keyframes sparkle {
+      0%, 100% { opacity: 0; transform: scale(0); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+    
+    .float-animation { animation: float 3s ease-in-out infinite; }
+    .pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+    .heartbeat { animation: heartbeat 1s ease-in-out infinite; }
+    .fade-in { animation: fade-in 0.5s ease-out forwards; }
+    .slide-up { animation: slide-up 0.6s ease-out forwards; }
+    .char-left { animation: character-enter-left 0.8s ease-out forwards; }
+    .char-right { animation: character-enter-right 0.8s ease-out forwards; }
+    .blush-anim { animation: blush 2s ease-in-out infinite; }
+    
+    .sakura {
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      background: linear-gradient(135deg, #ffb7c5 0%, #ff69b4 100%);
+      border-radius: 50% 0 50% 50%;
+      animation: sakura-fall linear infinite;
+      pointer-events: none;
+    }
+    
+    .dialogue-box {
+      background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(255,240,245,0.95) 100%);
+      border: 3px solid #ff69b4;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(255,105,180,0.3);
+    }
+    
+    .choice-btn {
+      background: linear-gradient(135deg, #fff0f5 0%, #ffe4ec 100%);
+      border: 2px solid #ff69b4;
+      transition: all 0.3s ease;
+    }
+    
+    .choice-btn:hover {
+      background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(255,105,180,0.4);
+    }
+    
+    .character-sprite {
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+    }
+    
+    .text-reveal {
+      overflow: hidden;
+      white-space: pre-wrap;
+    }
+    
+    .bg-scene {
+      background-size: cover;
+      background-position: center;
+      transition: background-image 1s ease-in-out;
+    }
+    
+    .music-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: linear-gradient(135deg, #ff69b4, #ff1493);
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(255,105,180,0.4);
+      transition: all 0.3s ease;
+    }
+    
+    .music-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(255,105,180,0.6);
+    }
+    
+    .save-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
+    }
+    
+    .progress-bar {
+      height: 4px;
+      background: linear-gradient(90deg, #ff69b4, #ff1493, #ff69b4);
+      background-size: 200% 100%;
+      animation: gradient-shift 2s linear infinite;
+    }
+    
+    @keyframes gradient-shift {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+    
+    .notification {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      background: linear-gradient(135deg, #4ade80, #22c55e);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(34,197,94,0.4);
+      z-index: 1001;
+      animation: slide-up 0.3s ease-out;
+    }
+    
+    .heart-particle {
+      position: absolute;
+      font-size: 20px;
+      animation: float 2s ease-in-out infinite;
+      pointer-events: none;
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full bg-pink-50 overflow-hidden"><!-- Background Music -->
+  <audio id="bgMusic" loop><source src="dark.mp3" type="audio/mpeg">
+  </audio><!-- Music Control Button --> <button id="musicBtn" class="music-btn" onclick="toggleMusic()">
+   <svg id="musicIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="white" class="w-6 h-6 mx-auto"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+   </svg></button> <!-- Save/Load Buttons -->
+  <div class="save-btn flex gap-2"><button onclick="saveGame()" class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-105"> 💾 Save </button> <button onclick="showLoadMenu()" class="bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-105"> 📂 Load </button>
+  </div><!-- Notification Container -->
+  <div id="notification" class="notification hidden"></div><!-- Main Game Container -->
+  <div id="gameContainer" class="h-full w-full relative overflow-hidden"><!-- Title Screen -->
+   <div id="titleScreen" class="h-full w-full flex flex-col items-center justify-center bg-gradient-to-b from-pink-100 via-pink-200 to-rose-300 relative"><!-- Sakura Particles -->
+    <div id="sakuraContainer" class="absolute inset-0 overflow-hidden pointer-events-none"></div><!-- Title -->
+    <div class="text-center z-10 fade-in">
+     <h1 class="title-font text-6xl md:text-8xl text-pink-600 mb-2 float-animation" style="text-shadow: 3px 3px 6px rgba(255,105,180,0.3);">💕 Love Story 💕</h1>
+     <h2 class="text-2xl md:text-3xl text-pink-500 font-semibold mb-4">SMA Negeri 1</h2>
+     <p class="text-pink-400 text-lg italic mb-8">"Ketika cinta datang di saat yang tak terduga..."</p><!-- Characters Preview -->
+     <div class="flex justify-center gap-8 mb-8">
+      <div class="text-center char-left">
+       <div class="w-32 h-32 md:w-40 md:h-40 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-6xl shadow-xl pulse-glow">
+        👨‍🎓
+       </div>
+       <p class="mt-2 font-bold text-blue-600">Maulana Rifky</p>
+       <p class="text-sm text-blue-400">Kelas 11 DKV</p>
+      </div>
+      <div class="text-5xl self-center heartbeat">
+       💕
+      </div>
+      <div class="text-center char-right">
+       <div class="w-32 h-32 md:w-40 md:h-40 rounded-full bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center text-6xl shadow-xl pulse-glow">
+        👩‍🎓
+       </div>
+       <p class="mt-2 font-bold text-pink-600">Sinta</p>
+       <p class="text-sm text-pink-400">Kelas 12 IPA</p>
+      </div>
+     </div><!-- Start Button --> <button onclick="startGame()" class="bg-gradient-to-r from-pink-500 to-rose-500 text-white text-xl font-bold px-12 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-110 pulse-glow"> ✨ Mulai Cerita ✨ </button>
+     <p class="mt-6 text-pink-400 text-sm">Klik untuk memulai perjalanan cinta...</p>
+    </div>
+   </div><!-- Game Screen -->
+   <div id="gameScreen" class="h-full w-full hidden relative"><!-- Progress Bar -->
+    <div class="absolute top-0 left-0 right-0 z-50">
+     <div id="progressBar" class="progress-bar" style="width: 0%"></div>
+    </div><!-- Background Scene -->
+    <div id="sceneBackground" class="absolute inset-0 bg-scene transition-all duration-1000"></div><!-- Scene Overlay -->
+    <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div><!-- Characters Container -->
+    <div id="charactersContainer" class="absolute inset-0 flex items-end justify-center pb-48 pointer-events-none"><!-- Characters will be dynamically added here -->
+    </div><!-- Dialogue Box -->
+    <div class="absolute bottom-0 left-0 right-0 p-4 md:p-6">
+     <div id="dialogueBox" class="dialogue-box p-6 max-w-4xl mx-auto slide-up"><!-- Speaker Name -->
+      <div id="speakerName" class="absolute -top-4 left-6 bg-gradient-to-r from-pink-500 to-rose-500 text-white px-6 py-1 rounded-full font-bold text-lg shadow-lg">
+       Narrator
+      </div><!-- Dialogue Text -->
+      <div id="dialogueText" class="text-gray-700 text-lg md:text-xl leading-relaxed min-h-[80px] pt-2">
+       Loading...
+      </div><!-- Choices Container -->
+      <div id="choicesContainer" class="mt-4 space-y-3 hidden"><!-- Choices will be dynamically added here -->
+      </div><!-- Continue Indicator -->
+      <div id="continueIndicator" class="text-right mt-2 text-pink-400 text-sm animate-pulse">
+       Klik untuk lanjut ▶
+      </div>
+     </div>
+    </div><!-- Chapter Title Overlay -->
+    <div id="chapterOverlay" class="absolute inset-0 bg-black/80 flex items-center justify-center z-40 hidden">
+     <div class="text-center text-white">
+      <p class="text-pink-400 text-xl mb-2">Chapter</p>
+      <h2 id="chapterTitle" class="title-font text-5xl md:text-7xl mb-4"></h2>
+      <p id="chapterSubtitle" class="text-pink-300 text-lg"></p>
+     </div>
+    </div>
+   </div><!-- Load Menu -->
+   <div id="loadMenu" class="absolute inset-0 bg-black/80 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl">
+     <h2 class="text-2xl font-bold text-pink-600 mb-6 text-center">📂 Load Game</h2>
+     <div id="saveSlots" class="space-y-3"><!-- Save slots will be populated here -->
+     </div><button onclick="hideLoadMenu()" class="mt-6 w-full bg-gray-200 text-gray-600 py-3 rounded-xl font-semibold hover:bg-gray-300 transition-all"> Kembali </button>
+    </div>
+   </div><!-- Ending Screen -->
+   <div id="endingScreen" class="h-full w-full hidden flex-col items-center justify-center bg-gradient-to-b from-pink-200 via-rose-200 to-pink-300 relative">
+    <div id="sakuraEndContainer" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
+    <div class="text-center z-10 fade-in">
+     <div class="text-8xl mb-6 heartbeat">
+      💕
+     </div>
+     <h1 class="title-font text-5xl md:text-7xl text-pink-600 mb-4">The End</h1>
+     <p id="endingText" class="text-xl text-pink-500 mb-8 max-w-lg mx-auto px-4"></p>
+     <div class="flex gap-4 justify-center"><button onclick="restartGame()" class="bg-gradient-to-r from-pink-500 to-rose-500 text-white text-lg font-bold px-8 py-3 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105"> 🔄 Main Lagi </button>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
+    // ==================== CONFIGURATION ====================
+    const defaultConfig = {
+      game_title: "Love Story - SMA Negeri 1"
+    };
+    
+    let config = { ...defaultConfig };
+    let saves = [];
+    
+    // ==================== GAME STATE ====================
+    let gameState = {
+      chapter: 1,
+      scene: 0,
+      affection: 50,
+      isTyping: false,
+      currentText: "",
+      textIndex: 0,
+      musicPlaying: false,
+      choicesMade: []
+    };
+    
+    // ==================== BACKGROUNDS ====================
+    const backgrounds = {
+      school_gate: "linear-gradient(180deg, #87CEEB 0%, #98D8C8 50%, #7CB342 100%)",
+      classroom: "linear-gradient(180deg, #FFF8E1 0%, #FFECB3 50%, #FFE082 100%)",
+      hallway: "linear-gradient(180deg, #E3F2FD 0%, #BBDEFB 50%, #90CAF9 100%)",
+      rooftop: "linear-gradient(180deg, #81D4FA 0%, #4FC3F7 30%, #29B6F6 100%)",
+      canteen: "linear-gradient(180deg, #FFCCBC 0%, #FFAB91 50%, #FF8A65 100%)",
+      library: "linear-gradient(180deg, #D7CCC8 0%, #BCAAA4 50%, #A1887F 100%)",
+      park: "linear-gradient(180deg, #C8E6C9 0%, #A5D6A7 50%, #81C784 100%)",
+      sunset: "linear-gradient(180deg, #FF8A65 0%, #FF7043 30%, #F4511E 60%, #5D4037 100%)",
+      night: "linear-gradient(180deg, #1A237E 0%, #283593 30%, #3949AB 60%, #1A237E 100%)",
+      rain: "linear-gradient(180deg, #607D8B 0%, #78909C 50%, #546E7A 100%)",
+      festival: "linear-gradient(180deg, #FFD54F 0%, #FFCA28 30%, #FFC107 60%, #FF8F00 100%)",
+      hospital: "linear-gradient(180deg, #ECEFF1 0%, #CFD8DC 50%, #B0BEC5 100%)",
+      beach: "linear-gradient(180deg, #4DD0E1 0%, #26C6DA 30%, #00BCD4 60%, #F5DEB3 100%)",
+      graduation: "linear-gradient(180deg, #CE93D8 0%, #BA68C8 30%, #AB47BC 60%, #7B1FA2 100%)"
+    };
+    
+    // ==================== STORY DATA ====================
+    // Total: 15 Chapters with multiple scenes each
+    const storyData = {
+      // ========== CHAPTER 1: Pertemuan Pertama ==========
+      1: {
+        title: "Pertemuan Pertama",
+        subtitle: "Awal dari segalanya...",
+        scenes: [
+          {
+            background: "school_gate",
+            speaker: "Narrator",
+            text: "SMA Negeri 1, sebuah sekolah favorit yang terletak di pusat kota. Pagi ini, seperti biasa, suasana ramai menyambut para siswa yang berdatangan.",
+            characters: []
+          },
+          {
+            background: "school_gate",
+            speaker: "Narrator",
+            text: "Di antara keramaian itu, seorang pemuda berambut acak-acakan berlari dengan tergesa-gesa. Seragamnya sedikit berantakan, dan tasnya terbuka setengah.",
+            characters: ["rifky_panic"]
+          },
+          {
+            background: "school_gate",
+            speaker: "Rifky",
+            text: "Gawat, gawat, gawat! Telat lagi! Pak Budi pasti ngamuk kalau aku telat!",
+            characters: ["rifky_panic"]
+          },
+          {
+            background: "school_gate",
+            speaker: "Narrator",
+            text: "Maulana Rifky, siswa kelas 11 DKV yang terkenal dengan keterlambatannya. Meski begitu, dia memiliki hati yang baik dan selalu ceria.",
+            characters: ["rifky_normal"]
+          },
+          {
+            background: "school_gate",
+            speaker: "Rifky",
+            text: "(Dalam hati) Kalau aku lewat jalan pintas... mungkin bisa sampai tepat waktu!",
+            characters: ["rifky_thinking"]
+          },
+          {
+            background: "hallway",
+            speaker: "Narrator",
+            text: "Rifky memutuskan untuk berlari melewati koridor yang biasanya sepi. Tanpa melihat ke depan, dia terus berlari dengan kecepatan penuh.",
+            characters: ["rifky_panic"]
+          },
+          {
+            background: "hallway",
+            speaker: "Rifky",
+            text: "Sedikit lagi... sedikit la—WAAAA!",
+            characters: ["rifky_panic"]
+          },
+          {
+            background: "hallway",
+            speaker: "Narrator",
+            text: "BRUAKKK! Rifky menabrak seseorang dengan keras hingga keduanya terjatuh. Buku-buku berhamburan di lantai.",
+            characters: ["rifky_shocked", "sinta_angry"]
+          },
+          {
+            background: "hallway",
+            speaker: "???",
+            text: "Aduh! Sakit tau! Kamu kalau jalan pakai mata dong!",
+            characters: ["rifky_shocked", "sinta_angry"]
+          },
+          {
+            background: "hallway",
+            speaker: "Narrator",
+            text: "Rifky mendongak dan... waktu seolah berhenti. Di depannya, seorang gadis cantik dengan rambut panjang hitam berkilau sedang menatapnya dengan kesal.",
+            characters: ["rifky_blush", "sinta_angry"]
+          },
+          {
+            background: "hallway",
+            speaker: "Rifky",
+            text: "(Dalam hati) C-cantik banget... Siapa dia?",
+            characters: ["rifky_blush", "sinta_angry"]
+          },
+          {
+            background: "hallway",
+            speaker: "Sinta",
+            text: "Hei! Kamu dengar tidak?! Bantu aku beresin buku-buku ini!",
+            characters: ["rifky_blush", "sinta_angry"]
+          },
+          {
+            background: "hallway",
+            speaker: "Rifky",
+            text: "A-ah, maaf! Maaf banget! Aku... aku nggak sengaja!",
+            characters: ["rifky_panic", "sinta_angry"]
+          },
+          {
+            background: "hallway",
+            speaker: "Narrator",
+            text: "Dengan gugup, Rifky membantu mengumpulkan buku-buku yang berserakan. Tangannya gemetar saat tanpa sengaja menyentuh tangan gadis itu.",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "hallway",
+            speaker: "Sinta",
+            text: "...! (Menarik tangan dengan cepat) S-sudahlah, biar aku saja!",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "hallway",
+            speaker: "Rifky",
+            text: "Eh, tapi... aku yang salah. Biar aku bantu...",
+            characters: ["rifky_sad", "sinta_normal"]
+          },
+          {
+            background: "hallway",
+            speaker: "Sinta",
+            text: "(Menghela napas) Ya sudah, cepat. Aku ada kelas.",
+            characters: ["rifky_normal", "sinta_normal"]
+          },
+          {
+            background: "hallway",
+            speaker: "Narrator",
+            text: "Mereka berdua mengumpulkan buku dalam keheningan yang canggung. Rifky mencuri pandang ke gadis itu beberapa kali.",
+            characters: ["rifky_blush", "sinta_normal"]
+          },
+          {
+            background: "hallway",
+            speaker: "Rifky",
+            text: "Umm... namaku Maulana Rifky. Kelas 11 DKV. Kamu?",
+            characters: ["rifky_smile", "sinta_normal"]
+          },
+          {
+            background: "hallway",
+            speaker: "Sinta",
+            text: "...Sinta. Kelas 12 IPA.",
+            characters: ["rifky_smile", "sinta_normal"]
+          },
+          {
+            background: "hallway",
+            speaker: "Rifky",
+            text: "(Dalam hati) Sinta... nama yang indah. Tunggu, kelas 12? Berarti dia kakak kelas!",
+            characters: ["rifky_blush", "sinta_normal"]
+          },
+          {
+            background: "hallway",
+            speaker: "Sinta",
+            text: "Terima kasih sudah membantu. Lain kali hati-hati ya.",
+            characters: ["rifky_normal", "sinta_smile"]
+          },
+          {
+            background: "hallway",
+            speaker: "Narrator",
+            text: "Sinta tersenyum tipis sebelum berjalan pergi. Senyuman itu... membuat jantung Rifky berdetak tidak karuan.",
+            characters: ["rifky_blush"]
+          },
+          {
+            background: "hallway",
+            speaker: "Rifky",
+            text: "...Sepertinya aku baru saja jatuh cinta.",
+            characters: ["rifky_blush"]
+          },
+          {
+            background: "classroom",
+            speaker: "Narrator",
+            text: "Sepanjang hari itu, Rifky tidak bisa berkonsentrasi sama sekali. Bayangan Sinta terus muncul di benaknya.",
+            characters: ["rifky_thinking"]
+          },
+          {
+            background: "classroom",
+            speaker: "Guru",
+            text: "Rifky! Kamu dengar tidak penjelasan Bapak?!",
+            characters: ["rifky_shocked"]
+          },
+          {
+            background: "classroom",
+            speaker: "Rifky",
+            text: "E-eh?! I-iya, Pak! Dengar kok!",
+            characters: ["rifky_panic"]
+          },
+          {
+            background: "classroom",
+            speaker: "Teman",
+            text: "(Berbisik) Hei, Rifky. Kamu kenapa? Dari tadi melamun terus.",
+            characters: ["rifky_blush"]
+          },
+          {
+            background: "classroom",
+            speaker: "Rifky",
+            text: "(Berbisik) Nggak... nggak ada apa-apa.",
+            characters: ["rifky_blush"]
+          },
+          {
+            background: "classroom",
+            speaker: "Narrator",
+            text: "Tapi di dalam hatinya, Rifky bertekad. Dia harus mengenal Sinta lebih dekat. Apapun caranya.",
+            characters: ["rifky_determined"]
+          }
+        ]
+      },
+      
+      // ========== CHAPTER 2: Mencari Tahu ==========
+      2: {
+        title: "Mencari Tahu",
+        subtitle: "Siapa sebenarnya Sinta?",
+        scenes: [
+          {
+            background: "canteen",
+            speaker: "Narrator",
+            text: "Keesokan harinya, waktu istirahat. Rifky duduk di kantin bersama sahabatnya, Dimas.",
+            characters: ["rifky_normal"]
+          },
+          {
+            background: "canteen",
+            speaker: "Dimas",
+            text: "Bro, kamu dari kemarin aneh banget. Ada apa sih?",
+            characters: ["rifky_blush"]
+          },
+          {
+            background: "canteen",
+            speaker: "Rifky",
+            text: "Dim... kamu tau cewek namanya Sinta? Kelas 12 IPA?",
+            characters: ["rifky_blush"]
+          },
+          {
+            background: "canteen",
+            speaker: "Dimas",
+            text: "SINTA?! Kamu ngomongin Sinta yang ITU?!",
+            characters: ["rifky_confused"]
+          },
+          {
+            background: "canteen",
+            speaker: "Rifky",
+            text: "I-iya... memangnya kenapa?",
+            characters: ["rifky_confused"]
+          },
+          {
+            background: "canteen",
+            speaker: "Dimas",
+            text: "Bro... Sinta itu cewek paling populer di sekolah! Cantik, pintar, jago olahraga. Dia itu kayak... bunga sekolah!",
+            characters: ["rifky_shocked"]
+          },
+          {
+            background: "canteen",
+            speaker: "Rifky",
+            text: "S-serius?! Pantesan... dia cantik banget.",
+            characters: ["rifky_blush"]
+          },
+          {
+            background: "canteen",
+            speaker: "Dimas",
+            text: "Tapi bro... banyak cowok yang udah nembak dia. Semuanya ditolak. Dia itu susah dideketin.",
+            characters: ["rifky_sad"]
+          },
+          {
+            background: "canteen",
+            speaker: "Rifky",
+            text: "...",
+            characters: ["rifky_sad"]
+          },
+          {
+            background: "canteen",
+            speaker: "Dimas",
+            text: "Jangan bilang... kamu suka sama dia?",
+            characters: ["rifky_blush"]
+          },
+          {
+            background: "canteen",
+            speaker: "Rifky",
+            text: "A-aku... nggak tau. Tapi aku pengen kenal dia lebih dekat.",
+            characters: ["rifky_determined"]
+          },
+          {
+            background: "canteen",
+            speaker: "Dimas",
+            text: "(Menghela napas) Good luck, bro. Kamu butuh keajaiban.",
+            characters: ["rifky_determined"]
+          },
+          {
+            background: "library",
+            speaker: "Narrator",
+            text: "Rifky memutuskan untuk pergi ke perpustakaan. Kata temannya, Sinta sering menghabiskan waktu di sana.",
+            characters: ["rifky_normal"]
+          },
+          {
+            background: "library",
+            speaker: "Rifky",
+            text: "(Dalam hati) Kalau aku bisa 'tidak sengaja' ketemu dia di sini...",
+            characters: ["rifky_thinking"]
+          },
+          {
+            background: "library",
+            speaker: "Narrator",
+            text: "Dan benar saja. Di pojok perpustakaan, Sinta duduk sendirian, tenggelam dalam buku tebal.",
+            characters: ["rifky_blush", "sinta_normal"]
+          },
+          {
+            background: "library",
+            speaker: "Rifky",
+            text: "(Dalam hati) Dia di sini! Aduh... aku harus ngomong apa?!",
+            characters: ["rifky_panic"]
+          },
+          {
+            background: "library",
+            speaker: "Narrator",
+            text: "Dengan langkah ragu, Rifky mendekati meja Sinta.",
+            characters: ["rifky_nervous", "sinta_normal"]
+          },
+          {
+            background: "library",
+            speaker: "Rifky",
+            text: "H-hai... Sinta, kan? Boleh aku duduk di sini?",
+            characters: ["rifky_nervous", "sinta_normal"]
+          },
+          {
+            background: "library",
+            speaker: "Sinta",
+            text: "(Mendongak) Oh, kamu yang kemarin. Yang nabrak aku.",
+            characters: ["rifky_panic", "sinta_normal"]
+          },
+          {
+            background: "library",
+            speaker: "Rifky",
+            text: "A-ahaha... iya. Maaf soal itu. Aku mau minta maaf sekali lagi.",
+            characters: ["rifky_nervous", "sinta_normal"]
+          },
+          {
+            background: "library",
+            speaker: "Sinta",
+            text: "...Terserah. Duduk saja.",
+            characters: ["rifky_smile", "sinta_normal"]
+          },
+          {
+            background: "library",
+            speaker: "Narrator",
+            text: "Rifky duduk dengan gugup. Jantungnya berdebar sangat kencang.",
+            characters: ["rifky_blush", "sinta_normal"]
+          },
+          {
+            background: "library",
+            speaker: "Rifky",
+            text: "Kamu... baca apa?",
+            characters: ["rifky_normal", "sinta_normal"]
+          },
+          {
+            background: "library",
+            speaker: "Sinta",
+            text: "Fisika kuantum. Untuk olimpiade.",
+            characters: ["rifky_shocked", "sinta_normal"]
+          },
+          {
+            background: "library",
+            speaker: "Rifky",
+            text: "(Dalam hati) F-fisika kuantum?! Aku aja matematika dasar masih suka salah!",
+            characters: ["rifky_shocked", "sinta_normal"]
+          },
+          {
+            background: "library",
+            speaker: "Rifky",
+            text: "W-wah... keren. Kamu pasti pintar banget ya.",
+            characters: ["rifky_smile", "sinta_normal"]
+          },
+          {
+            background: "library",
+            speaker: "Sinta",
+            text: "Biasa saja. Kamu sendiri? Ngapain di perpustakaan?",
+            characters: ["rifky_panic", "sinta_normal"]
+          },
+          {
+            background: "library",
+            speaker: "Rifky",
+            text: "A-aku... mau cari referensi buat tugas desain! Iya, tugas desain!",
+            characters: ["rifky_nervous", "sinta_normal"]
+          },
+          {
+            background: "library",
+            speaker: "Sinta",
+            text: "Oh, kamu anak DKV ya. Desain Komunikasi Visual.",
+            characters: ["rifky_normal", "sinta_normal"]
+          },
+          {
+            background: "library",
+            speaker: "Rifky",
+            text: "Iya! Aku suka menggambar. Meski... nilaiku nggak bagus-bagus amat sih.",
+            characters: ["rifky_sad", "sinta_normal"]
+          },
+          {
+            background: "library",
+            speaker: "Sinta",
+            text: "...Boleh aku lihat gambarmu?",
+            characters: ["rifky_shocked", "sinta_smile"]
+          },
+          {
+            background: "library",
+            speaker: "Rifky",
+            text: "E-eh?! B-boleh! Ini... (membuka sketchbook)",
+            characters: ["rifky_blush", "sinta_smile"]
+          },
+          {
+            background: "library",
+            speaker: "Narrator",
+            text: "Rifky menunjukkan sketchbook-nya dengan tangan gemetar. Di dalamnya penuh dengan gambar karakter anime dan desain poster.",
+            characters: ["rifky_nervous", "sinta_smile"]
+          },
+          {
+            background: "library",
+            speaker: "Sinta",
+            text: "...Bagus. Gaya gambarmu unik.",
+            characters: ["rifky_blush", "sinta_smile"]
+          },
+          {
+            background: "library",
+            speaker: "Rifky",
+            text: "B-benarkah?! Terima kasih!",
+            characters: ["rifky_happy", "sinta_smile"]
+          },
+          {
+            background: "library",
+            speaker: "Sinta",
+            text: "Tapi... kenapa kamu bilang nilaimu tidak bagus?",
+            characters: ["rifky_sad", "sinta_normal"]
+          },
+          {
+            background: "library",
+            speaker: "Rifky",
+            text: "Yah... aku memang bodoh. Susah konsentrasi, sering telat, tugas sering nggak selesai...",
+            characters: ["rifky_sad", "sinta_normal"]
+          },
+          {
+            background: "library",
+            speaker: "Sinta",
+            text: "...Bodoh dan malas itu beda. Gambarmu menunjukkan kamu punya bakat. Yang kurang cuma... disiplin.",
+            characters: ["rifky_shocked", "sinta_normal"]
+          },
+          {
+            background: "library",
+            speaker: "Rifky",
+            text: "(Dalam hati) Dia... membela aku?",
+            characters: ["rifky_blush", "sinta_normal"]
+          },
+          {
+            background: "library",
+            speaker: "Sinta",
+            text: "(Melihat jam) Sudah waktunya kelas. Aku duluan.",
+            characters: ["rifky_normal", "sinta_normal"]
+          },
+          {
+            background: "library",
+            speaker: "Rifky",
+            text: "A-ah, iya! Sampai ketemu lagi, Kak Sinta!",
+            characters: ["rifky_happy", "sinta_smile"]
+          },
+          {
+            background: "library",
+            speaker: "Sinta",
+            text: "(Berhenti sejenak) ...Panggil Sinta saja.",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "library",
+            speaker: "Narrator",
+            text: "Sinta berjalan pergi, meninggalkan Rifky yang mematung dengan wajah merah padam.",
+            characters: ["rifky_blush"]
+          },
+          {
+            background: "library",
+            speaker: "Rifky",
+            text: "...Sinta. (tersenyum lebar) Ini kemajuan!",
+            characters: ["rifky_happy"]
+          }
+        ]
+      },
+      
+      // ========== CHAPTER 3: Momen di Rooftop ==========
+      3: {
+        title: "Momen di Rooftop",
+        subtitle: "Di bawah langit biru...",
+        scenes: [
+          {
+            background: "rooftop",
+            speaker: "Narrator",
+            text: "Seminggu telah berlalu. Rifky dan Sinta semakin sering bertemu di perpustakaan. Hari ini, Rifky memutuskan untuk mencari Sinta di tempat lain.",
+            characters: ["rifky_normal"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "(Dalam hati) Katanya Sinta suka ke rooftop kalau lagi istirahat...",
+            characters: ["rifky_thinking"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Narrator",
+            text: "Saat membuka pintu rooftop, Rifky melihat pemandangan yang membuatnya terpana.",
+            characters: ["rifky_blush", "sinta_normal"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Narrator",
+            text: "Sinta berdiri di dekat pagar, rambutnya berkibar diterpa angin. Langit biru membentang di belakangnya seperti lukisan.",
+            characters: ["rifky_blush", "sinta_smile"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "(Dalam hati) Cantik... kayak malaikat.",
+            characters: ["rifky_blush", "sinta_smile"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "(Menoleh) Oh, Rifky. Kamu ngapain di sini?",
+            characters: ["rifky_nervous", "sinta_normal"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "A-aku... cari angin! Iya, angin! Kebetulan ketemu kamu!",
+            characters: ["rifky_nervous", "sinta_normal"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "(Tersenyum tipis) Bohong. Kamu pasti cari aku.",
+            characters: ["rifky_shocked", "sinta_smile"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "E-eh?! Kok tau?!",
+            characters: ["rifky_panic", "sinta_smile"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "Karena kamu selalu muncul di tempat aku berada. Sudah seminggu.",
+            characters: ["rifky_blush", "sinta_smile"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "...(wajah merah padam) M-maaf kalau menganggu...",
+            characters: ["rifky_blush", "sinta_smile"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "Aku tidak bilang terganggu. Sini, duduk di sebelahku.",
+            characters: ["rifky_shocked", "sinta_smile"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Narrator",
+            text: "Jantung Rifky serasa mau meledak. Dia duduk di sebelah Sinta dengan gugup.",
+            characters: ["rifky_blush", "sinta_smile"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "Aku suka tempat ini. Sepi. Tenang. Bisa melihat langit dengan jelas.",
+            characters: ["rifky_normal", "sinta_smile"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "Kamu... sering sendirian ya, Sinta?",
+            characters: ["rifky_normal", "sinta_normal"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "...Iya. Orang-orang di sekitarku selalu punya ekspektasi. 'Sinta harus sempurna.' Capek.",
+            characters: ["rifky_sad", "sinta_sad"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "Pasti berat ya... jadi orang yang dikagumi banyak orang.",
+            characters: ["rifky_sad", "sinta_sad"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "Kamu orang pertama yang bilang begitu. Biasanya orang bilang aku beruntung.",
+            characters: ["rifky_normal", "sinta_smile"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "Beruntung gimana? Kalau capek ya capek. Perasaan itu valid.",
+            characters: ["rifky_smile", "sinta_blush"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "...(tersenyum tulus) Terima kasih, Rifky.",
+            characters: ["rifky_blush", "sinta_smile"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Narrator",
+            text: "Untuk pertama kalinya, Rifky melihat senyum tulus dari Sinta. Bukan senyum sopan yang biasa dia tunjukkan ke orang lain.",
+            characters: ["rifky_blush", "sinta_smile"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "(Dalam hati) Senyumnya... indah banget.",
+            characters: ["rifky_blush", "sinta_smile"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "Rifky... boleh aku cerita sesuatu?",
+            characters: ["rifky_normal", "sinta_sad"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "Tentu. Aku akan mendengarkan.",
+            characters: ["rifky_smile", "sinta_sad"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "Orang tuaku... mereka sibuk. Sangat sibuk. Aku jarang bertemu mereka.",
+            characters: ["rifky_sad", "sinta_sad"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "Makanya aku berusaha jadi yang terbaik. Supaya mereka bangga. Supaya mereka... melihatku.",
+            characters: ["rifky_sad", "sinta_sad"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "Sinta...",
+            characters: ["rifky_sad", "sinta_sad"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "Tapi kadang... aku lelah. Aku pengen jadi biasa saja. Tidak perlu sempurna.",
+            characters: ["rifky_sad", "sinta_sad"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Narrator",
+            text: "Tanpa sadar, Rifky mengulurkan tangannya dan menggenggam tangan Sinta dengan lembut.",
+            characters: ["rifky_determined", "sinta_shocked"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "R-Rifky?!",
+            characters: ["rifky_determined", "sinta_blush"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "Kalau di depanku... kamu boleh jadi dirimu sendiri. Nggak perlu sempurna. Aku akan tetap di sini.",
+            characters: ["rifky_determined", "sinta_blush"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "...(wajah memerah) Kamu... bodoh.",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "(Tertawa) Iya, aku memang bodoh. Tapi bodoh yang tulus!",
+            characters: ["rifky_happy", "sinta_smile"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Narrator",
+            text: "Sinta tertawa kecil. Suara tawanya bagaikan lonceng di telinga Rifky.",
+            characters: ["rifky_blush", "sinta_happy"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Narrator",
+            text: "Mereka berdua duduk dalam keheningan yang nyaman, memandang awan yang bergerak perlahan di langit.",
+            characters: ["rifky_smile", "sinta_smile"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "(Berbisik) Terima kasih... Rifky.",
+            characters: ["rifky_blush", "sinta_blush"]
+          }
+        ]
+      },
+      
+      // ========== CHAPTER 4: Festival Sekolah ==========
+      4: {
+        title: "Festival Sekolah",
+        subtitle: "Momen yang tak terlupakan",
+        scenes: [
+          {
+            background: "festival",
+            speaker: "Narrator",
+            text: "Sebulan kemudian, SMA Negeri 1 mengadakan festival tahunan. Seluruh sekolah berubah menjadi tempat yang meriah dan penuh warna.",
+            characters: []
+          },
+          {
+            background: "festival",
+            speaker: "Dimas",
+            text: "Bro! Festival tahun ini keren banget! Kelas kita bikin cafe maid!",
+            characters: ["rifky_happy"]
+          },
+          {
+            background: "festival",
+            speaker: "Rifky",
+            text: "Iya sih... tapi aku lebih tertarik ke stan lain.",
+            characters: ["rifky_blush"]
+          },
+          {
+            background: "festival",
+            speaker: "Dimas",
+            text: "Hah? Stan mana? Jangan-jangan... stan kelas 12 IPA?",
+            characters: ["rifky_blush"]
+          },
+          {
+            background: "festival",
+            speaker: "Rifky",
+            text: "...(tidak menjawab, wajah memerah)",
+            characters: ["rifky_blush"]
+          },
+          {
+            background: "festival",
+            speaker: "Dimas",
+            text: "HAHAHA! Kamu mau ketemu Sinta kan?! Dasar!",
+            characters: ["rifky_panic"]
+          },
+          {
+            background: "festival",
+            speaker: "Rifky",
+            text: "B-berisik! Aku cuma mau lihat-lihat aja!",
+            characters: ["rifky_panic"]
+          },
+          {
+            background: "festival",
+            speaker: "Narrator",
+            text: "Rifky berjalan menuju stan kelas 12 IPA. Mereka membuat haunted house dengan tema sains.",
+            characters: ["rifky_nervous"]
+          },
+          {
+            background: "festival",
+            speaker: "Rifky",
+            text: "(Dalam hati) Semoga Sinta ada di sini...",
+            characters: ["rifky_nervous"]
+          },
+          {
+            background: "festival",
+            speaker: "???",
+            text: "Rifky!",
+            characters: ["rifky_shocked", "sinta_happy"]
+          },
+          {
+            background: "festival",
+            speaker: "Narrator",
+            text: "Rifky berbalik dan melihat Sinta... dalam kostum kimono putih dengan hiasan bunga sakura.",
+            characters: ["rifky_blush", "sinta_happy"]
+          },
+          {
+            background: "festival",
+            speaker: "Rifky",
+            text: "(Dalam hati) Ya Tuhan... dia cantik banget!",
+            characters: ["rifky_blush", "sinta_happy"]
+          },
+          {
+            background: "festival",
+            speaker: "Sinta",
+            text: "Kamu datang! Aku pikir kamu sibuk di stan kelasmu.",
+            characters: ["rifky_blush", "sinta_smile"]
+          },
+          {
+            background: "festival",
+            speaker: "Rifky",
+            text: "A-aku... mau lihat stan kamu. K-kostummu... bagus.",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "festival",
+            speaker: "Sinta",
+            text: "(Tersipu) Terima kasih. Ini kostum untuk haunted house-nya.",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "festival",
+            speaker: "Rifky",
+            text: "K-kamu jadi hantu? Tapi... cantik banget untuk jadi hantu.",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "festival",
+            speaker: "Sinta",
+            text: "...! (wajah makin merah) K-kamu ini... bisa aja.",
+            characters: ["rifky_smile", "sinta_blush"]
+          },
+          {
+            background: "festival",
+            speaker: "Narrator",
+            text: "Teman-teman Sinta memperhatikan interaksi mereka dengan penuh keingintahuan.",
+            characters: ["rifky_nervous", "sinta_blush"]
+          },
+          {
+            background: "festival",
+            speaker: "Teman Sinta",
+            text: "Wah, Sinta! Siapa nih? Pacar baru?",
+            characters: ["rifky_panic", "sinta_angry"]
+          },
+          {
+            background: "festival",
+            speaker: "Sinta",
+            text: "B-bukan! Dia cuma teman!",
+            characters: ["rifky_sad", "sinta_blush"]
+          },
+          {
+            background: "festival",
+            speaker: "Rifky",
+            text: "(Dalam hati) 'Cuma teman'... ya...",
+            characters: ["rifky_sad", "sinta_blush"]
+          },
+          {
+            background: "festival",
+            speaker: "Sinta",
+            text: "(Berbisik ke Rifky) Maaf... nanti kita bicara lagi ya?",
+            characters: ["rifky_normal", "sinta_blush"]
+          },
+          {
+            background: "festival",
+            speaker: "Rifky",
+            text: "(Tersenyum) Iya, nggak apa-apa.",
+            characters: ["rifky_smile", "sinta_smile"]
+          },
+          {
+            background: "sunset",
+            speaker: "Narrator",
+            text: "Sore hari, setelah festival hampir berakhir. Rifky duduk sendirian di bangku taman sekolah.",
+            characters: ["rifky_sad"]
+          },
+          {
+            background: "sunset",
+            speaker: "Rifky",
+            text: "(Menghela napas) 'Cuma teman' ya... apa aku berharap terlalu tinggi?",
+            characters: ["rifky_sad"]
+          },
+          {
+            background: "sunset",
+            speaker: "???",
+            text: "Rifky!",
+            characters: ["rifky_shocked", "sinta_smile"]
+          },
+          {
+            background: "sunset",
+            speaker: "Narrator",
+            text: "Sinta berlari menghampiri Rifky, masih dengan kostum kimononya.",
+            characters: ["rifky_shocked", "sinta_happy"]
+          },
+          {
+            background: "sunset",
+            speaker: "Sinta",
+            text: "Hah... hah... akhirnya ketemu! Aku cari kamu dari tadi!",
+            characters: ["rifky_confused", "sinta_happy"]
+          },
+          {
+            background: "sunset",
+            speaker: "Rifky",
+            text: "C-cari aku? Kenapa?",
+            characters: ["rifky_confused", "sinta_smile"]
+          },
+          {
+            background: "sunset",
+            speaker: "Sinta",
+            text: "Karena... (malu-malu) karena aku mau jalan-jalan di festival sama kamu.",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "sunset",
+            speaker: "Rifky",
+            text: "E-eh?! Sama aku?!",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "sunset",
+            speaker: "Sinta",
+            text: "Kenapa? Nggak mau?",
+            characters: ["rifky_panic", "sinta_sad"]
+          },
+          {
+            background: "sunset",
+            speaker: "Rifky",
+            text: "MAU! Mau banget! A-ayo!",
+            characters: ["rifky_happy", "sinta_happy"]
+          },
+          {
+            background: "festival",
+            speaker: "Narrator",
+            text: "Rifky dan Sinta berjalan bersama di antara stan-stan festival. Mereka tertawa, berbagi makanan, dan menikmati waktu berdua.",
+            characters: ["rifky_happy", "sinta_happy"]
+          },
+          {
+            background: "festival",
+            speaker: "Sinta",
+            text: "Rifky, lihat! Ada stan tembak! Mau coba?",
+            characters: ["rifky_smile", "sinta_happy"]
+          },
+          {
+            background: "festival",
+            speaker: "Rifky",
+            text: "Boleh! Tapi aku nggak jago sih...",
+            characters: ["rifky_nervous", "sinta_smile"]
+          },
+          {
+            background: "festival",
+            speaker: "Narrator",
+            text: "Rifky mencoba menembak dan... gagal total. Tapi dia tidak menyerah.",
+            characters: ["rifky_determined", "sinta_smile"]
+          },
+          {
+            background: "festival",
+            speaker: "Rifky",
+            text: "Sekali lagi! Aku pasti bisa!",
+            characters: ["rifky_determined", "sinta_smile"]
+          },
+          {
+            background: "festival",
+            speaker: "Narrator",
+            text: "Setelah beberapa kali mencoba... Rifky berhasil menjatuhkan boneka kelinci!",
+            characters: ["rifky_happy", "sinta_happy"]
+          },
+          {
+            background: "festival",
+            speaker: "Rifky",
+            text: "YES! Dapat! (memberikan ke Sinta) Ini... untukmu.",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "festival",
+            speaker: "Sinta",
+            text: "(Menerima dengan malu-malu) T-terima kasih...",
+            characters: ["rifky_smile", "sinta_blush"]
+          },
+          {
+            background: "night",
+            speaker: "Narrator",
+            text: "Malam tiba. Festival diakhiri dengan pertunjukan kembang api.",
+            characters: ["rifky_smile", "sinta_smile"]
+          },
+          {
+            background: "night",
+            speaker: "Sinta",
+            text: "Rifky... terima kasih untuk hari ini. Aku... senang sekali.",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "night",
+            speaker: "Rifky",
+            text: "Aku juga. Ini... hari terbaik dalam hidupku.",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "night",
+            speaker: "Narrator",
+            text: "Kembang api meledak di langit, menerangi wajah mereka berdua. Tangan mereka tanpa sadar saling menggenggam.",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "night",
+            speaker: "Sinta",
+            text: "(Berbisik) Rifky... aku...",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "night",
+            speaker: "Narrator",
+            text: "Tapi suara kembang api yang keras meredam kata-katanya...",
+            characters: ["rifky_confused", "sinta_blush"]
+          },
+          {
+            background: "night",
+            speaker: "Rifky",
+            text: "Hah? Kamu bilang apa?",
+            characters: ["rifky_confused", "sinta_blush"]
+          },
+          {
+            background: "night",
+            speaker: "Sinta",
+            text: "(Menggeleng, tersenyum) Nggak... bukan apa-apa.",
+            characters: ["rifky_confused", "sinta_smile"]
+          }
+        ]
+      },
+      
+      // ========== CHAPTER 5: Ujian dan Perjuangan ==========
+      5: {
+        title: "Ujian dan Perjuangan",
+        subtitle: "Ketika cinta dan akademik berbenturan",
+        scenes: [
+          {
+            background: "classroom",
+            speaker: "Narrator",
+            text: "Setelah festival, hubungan Rifky dan Sinta semakin dekat. Tapi... ujian semester menanti.",
+            characters: ["rifky_sad"]
+          },
+          {
+            background: "classroom",
+            speaker: "Guru",
+            text: "Rifky! Nilai ulangan harianmu turun lagi! Kalau begini terus, kamu bisa tidak naik kelas!",
+            characters: ["rifky_sad"]
+          },
+          {
+            background: "classroom",
+            speaker: "Rifky",
+            text: "M-maaf, Pak...",
+            characters: ["rifky_sad"]
+          },
+          {
+            background: "classroom",
+            speaker: "Narrator",
+            text: "Rifky memang bukan siswa yang pintar. Tapi belakangan, nilainya semakin buruk karena terlalu sering memikirkan Sinta.",
+            characters: ["rifky_sad"]
+          },
+          {
+            background: "library",
+            speaker: "Sinta",
+            text: "Rifky, kenapa wajahmu murung?",
+            characters: ["rifky_sad", "sinta_normal"]
+          },
+          {
+            background: "library",
+            speaker: "Rifky",
+            text: "Sinta... nilaiku jelek banget. Aku takut nggak naik kelas.",
+            characters: ["rifky_sad", "sinta_sad"]
+          },
+          {
+            background: "library",
+            speaker: "Sinta",
+            text: "Kenapa tidak bilang dari awal? Aku bisa bantu kamu belajar!",
+            characters: ["rifky_shocked", "sinta_smile"]
+          },
+          {
+            background: "library",
+            speaker: "Rifky",
+            text: "E-eh?! Kamu mau ngajarin aku?!",
+            characters: ["rifky_shocked", "sinta_smile"]
+          },
+          {
+            background: "library",
+            speaker: "Sinta",
+            text: "Tentu. Kita mulai dari besok. Setiap sore, di perpustakaan.",
+            characters: ["rifky_happy", "sinta_smile"]
+          },
+          {
+            background: "library",
+            speaker: "Narrator",
+            text: "Dan begitulah, setiap hari sepulang sekolah, Sinta mengajari Rifky dengan sabar.",
+            characters: ["rifky_normal", "sinta_smile"]
+          },
+          {
+            background: "library",
+            speaker: "Sinta",
+            text: "Rifky, ini rumusnya begini... perhatikan langkah-langkahnya.",
+            characters: ["rifky_thinking", "sinta_normal"]
+          },
+          {
+            background: "library",
+            speaker: "Rifky",
+            text: "Hmm... (menatap Sinta)",
+            characters: ["rifky_blush", "sinta_normal"]
+          },
+          {
+            background: "library",
+            speaker: "Sinta",
+            text: "...Kamu mendengarkan tidak?",
+            characters: ["rifky_panic", "sinta_angry"]
+          },
+          {
+            background: "library",
+            speaker: "Rifky",
+            text: "D-dengar kok! Maaf, kamu terlalu cantik...",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "library",
+            speaker: "Sinta",
+            text: "(Memukul kepala Rifky dengan buku) Fokus!",
+            characters: ["rifky_panic", "sinta_angry"]
+          },
+          {
+            background: "library",
+            speaker: "Rifky",
+            text: "Aduh! Iya, iya!",
+            characters: ["rifky_panic", "sinta_smile"]
+          },
+          {
+            background: "library",
+            speaker: "Narrator",
+            text: "Meski sering terdistraksi, Rifky berusaha keras. Dia tidak mau mengecewakan Sinta.",
+            characters: ["rifky_determined", "sinta_smile"]
+          },
+          {
+            background: "classroom",
+            speaker: "Narrator",
+            text: "Hari ujian tiba...",
+            characters: ["rifky_determined"]
+          },
+          {
+            background: "classroom",
+            speaker: "Rifky",
+            text: "(Dalam hati) Aku harus bisa! Demi Sinta... demi diriku sendiri!",
+            characters: ["rifky_determined"]
+          },
+          {
+            background: "classroom",
+            speaker: "Narrator",
+            text: "Rifky mengerjakan soal ujian dengan serius. Untuk pertama kalinya, dia benar-benar berusaha.",
+            characters: ["rifky_determined"]
+          },
+          {
+            background: "hallway",
+            speaker: "Narrator",
+            text: "Seminggu kemudian, pengumuman hasil ujian...",
+            characters: ["rifky_nervous"]
+          },
+          {
+            background: "hallway",
+            speaker: "Rifky",
+            text: "(Melihat papan pengumuman) ...!!!",
+            characters: ["rifky_shocked"]
+          },
+          {
+            background: "hallway",
+            speaker: "Narrator",
+            text: "Rifky tidak percaya dengan apa yang dilihatnya. Nilainya... naik drastis!",
+            characters: ["rifky_happy"]
+          },
+          {
+            background: "hallway",
+            speaker: "Rifky",
+            text: "AKU LULUS! AKU NGGAK REMEDIAL!",
+            characters: ["rifky_happy"]
+          },
+          {
+            background: "hallway",
+            speaker: "Sinta",
+            text: "(Muncul dari belakang) Selamat, Rifky!",
+            characters: ["rifky_happy", "sinta_happy"]
+          },
+          {
+            background: "hallway",
+            speaker: "Rifky",
+            text: "SINTA! Terima kasih! Ini semua berkatmu!",
+            characters: ["rifky_happy", "sinta_smile"]
+          },
+          {
+            background: "hallway",
+            speaker: "Narrator",
+            text: "Tanpa pikir panjang, Rifky memeluk Sinta dengan erat.",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "hallway",
+            speaker: "Sinta",
+            text: "R-Rifky! Banyak orang lihat!",
+            characters: ["rifky_panic", "sinta_blush"]
+          },
+          {
+            background: "hallway",
+            speaker: "Rifky",
+            text: "(Melepas pelukan) M-maaf! Aku terlalu senang!",
+            characters: ["rifky_panic", "sinta_blush"]
+          },
+          {
+            background: "hallway",
+            speaker: "Sinta",
+            text: "(Tersenyum malu) ...Tidak apa-apa. Aku juga senang.",
+            characters: ["rifky_blush", "sinta_smile"]
+          }
+        ]
+      },
+      
+      // ========== CHAPTER 6: Cemburu ==========
+      6: {
+        title: "Cemburu",
+        subtitle: "Perasaan yang tak terduga",
+        scenes: [
+          {
+            background: "hallway",
+            speaker: "Narrator",
+            text: "Beberapa minggu kemudian, muncul siswa baru di kelas 12 IPA. Namanya Kevin, cowok populer pindahan dari Jakarta.",
+            characters: []
+          },
+          {
+            background: "hallway",
+            speaker: "Dimas",
+            text: "Bro, kamu tau nggak? Anak baru itu katanya deket sama Sinta!",
+            characters: ["rifky_shocked"]
+          },
+          {
+            background: "hallway",
+            speaker: "Rifky",
+            text: "Hah?! Siapa?!",
+            characters: ["rifky_shocked"]
+          },
+          {
+            background: "hallway",
+            speaker: "Dimas",
+            text: "Kevin. Anak pindahan. Ganteng, pinter, tajir. Semua cewek suka sama dia.",
+            characters: ["rifky_angry"]
+          },
+          {
+            background: "hallway",
+            speaker: "Rifky",
+            text: "...",
+            characters: ["rifky_angry"]
+          },
+          {
+            background: "classroom",
+            speaker: "Narrator",
+            text: "Rifky mencari Sinta dan menemukannya... sedang tertawa bersama Kevin di kelas.",
+            characters: ["rifky_sad", "sinta_happy"]
+          },
+          {
+            background: "classroom",
+            speaker: "Kevin",
+            text: "Sinta, kamu lucu banget deh. Aku senang pindah ke sekolah ini.",
+            characters: ["rifky_angry", "sinta_smile"]
+          },
+          {
+            background: "classroom",
+            speaker: "Sinta",
+            text: "Haha, makasih Kevin. Kalau ada yang tidak mengerti, tanya aja ya.",
+            characters: ["rifky_angry", "sinta_smile"]
+          },
+          {
+            background: "classroom",
+            speaker: "Rifky",
+            text: "(Dalam hati) Siapa cowok itu?! Kenapa Sinta tertawa bersamanya?!",
+            characters: ["rifky_angry", "sinta_smile"]
+          },
+          {
+            background: "classroom",
+            speaker: "Narrator",
+            text: "Rifky merasakan sesuatu yang belum pernah dia rasakan sebelumnya. Rasa panas di dadanya... cemburu.",
+            characters: ["rifky_angry"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Narrator",
+            text: "Sore hari, di rooftop...",
+            characters: ["rifky_sad"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "Rifky? Kenapa kamu di sini? Biasanya kamu yang mencariku.",
+            characters: ["rifky_sad", "sinta_normal"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "...Nggak. Cuma pengen sendiri.",
+            characters: ["rifky_sad", "sinta_confused"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "Kamu kenapa? Ada masalah?",
+            characters: ["rifky_sad", "sinta_sad"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "...Kevin itu siapa?",
+            characters: ["rifky_angry", "sinta_confused"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "Kevin? Oh, dia siswa baru. Aku diminta guru untuk membimbingnya.",
+            characters: ["rifky_angry", "sinta_normal"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "Kayaknya kamu senang banget sama dia.",
+            characters: ["rifky_angry", "sinta_shocked"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "...Rifky, kamu cemburu?",
+            characters: ["rifky_blush", "sinta_smile"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "N-nggak! Siapa yang cemburu?!",
+            characters: ["rifky_blush", "sinta_smile"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "(Tersenyum) Wajahmu merah tuh.",
+            characters: ["rifky_blush", "sinta_smile"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "...Iya, aku cemburu. Puas?!",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "(Terdiam, wajah memerah) Rifky...",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "Aku tau aku cuma adik kelas yang bodoh. Aku nggak pinter kayak Kevin. Tapi...",
+            characters: ["rifky_sad", "sinta_sad"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "Rifky, dengerin aku.",
+            characters: ["rifky_sad", "sinta_normal"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "Kevin itu cuma teman biasa. Yang aku pedulikan... itu kamu.",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "...Eh?",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "Kamu bodoh? Iya. Sering telat? Iya. Tapi... kamu tulus. Dan itu yang membuatmu spesial.",
+            characters: ["rifky_blush", "sinta_smile"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "Sinta...",
+            characters: ["rifky_blush", "sinta_smile"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "Jadi... jangan cemburu lagi, ya?",
+            characters: ["rifky_happy", "sinta_smile"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "(Tersenyum lebar) Iya! Maaf aku kekanakan!",
+            characters: ["rifky_happy", "sinta_happy"]
+          }
+        ]
+      },
+      
+      // ========== CHAPTER 7: Rahasia Sinta ==========
+      7: {
+        title: "Rahasia Sinta",
+        subtitle: "Ketika kebenaran terungkap",
+        scenes: [
+          {
+            background: "school_gate",
+            speaker: "Narrator",
+            text: "Beberapa minggu berlalu. Rifky dan Sinta semakin dekat. Tapi Rifky menyadari ada sesuatu yang Sinta sembunyikan.",
+            characters: ["rifky_thinking"]
+          },
+          {
+            background: "library",
+            speaker: "Rifky",
+            text: "Sinta, akhir-akhir ini kamu sering ke UKS. Kamu sakit?",
+            characters: ["rifky_normal", "sinta_sad"]
+          },
+          {
+            background: "library",
+            speaker: "Sinta",
+            text: "...Tidak apa-apa. Cuma capek.",
+            characters: ["rifky_confused", "sinta_sad"]
+          },
+          {
+            background: "library",
+            speaker: "Rifky",
+            text: "(Dalam hati) Bohong. Wajahnya pucat...",
+            characters: ["rifky_sad", "sinta_sad"]
+          },
+          {
+            background: "hospital",
+            speaker: "Narrator",
+            text: "Suatu hari, Rifky tidak sengaja melihat Sinta keluar dari rumah sakit besar di kota.",
+            characters: ["rifky_shocked"]
+          },
+          {
+            background: "hospital",
+            speaker: "Rifky",
+            text: "Sinta?! Kenapa kamu di rumah sakit?!",
+            characters: ["rifky_shocked", "sinta_shocked"]
+          },
+          {
+            background: "hospital",
+            speaker: "Sinta",
+            text: "R-Rifky?! Kenapa kamu di sini?!",
+            characters: ["rifky_shocked", "sinta_panic"]
+          },
+          {
+            background: "hospital",
+            speaker: "Rifky",
+            text: "Aku mau jenguk tetangga. Tapi... kamu? Kamu sakit apa?",
+            characters: ["rifky_sad", "sinta_sad"]
+          },
+          {
+            background: "hospital",
+            speaker: "Sinta",
+            text: "...Ikut aku.",
+            characters: ["rifky_sad", "sinta_sad"]
+          },
+          {
+            background: "park",
+            speaker: "Narrator",
+            text: "Mereka berdua duduk di taman dekat rumah sakit. Sinta menghela napas berat.",
+            characters: ["rifky_sad", "sinta_sad"]
+          },
+          {
+            background: "park",
+            speaker: "Sinta",
+            text: "Rifky... ada sesuatu yang harus aku ceritakan.",
+            characters: ["rifky_sad", "sinta_sad"]
+          },
+          {
+            background: "park",
+            speaker: "Rifky",
+            text: "...Aku mendengarkan.",
+            characters: ["rifky_sad", "sinta_sad"]
+          },
+          {
+            background: "park",
+            speaker: "Sinta",
+            text: "Aku... punya penyakit jantung bawaan. Sudah dari kecil.",
+            characters: ["rifky_shocked", "sinta_sad"]
+          },
+          {
+            background: "park",
+            speaker: "Rifky",
+            text: "A-apa?! Sinta...",
+            characters: ["rifky_shocked", "sinta_sad"]
+          },
+          {
+            background: "park",
+            speaker: "Sinta",
+            text: "Makanya aku berusaha jadi yang terbaik. Aku tidak tau berapa lama waktu yang aku punya...",
+            characters: ["rifky_sad", "sinta_sad"]
+          },
+          {
+            background: "park",
+            speaker: "Rifky",
+            text: "(Air mata mulai menetes) K-kenapa kamu tidak cerita dari awal?!",
+            characters: ["rifky_sad", "sinta_sad"]
+          },
+          {
+            background: "park",
+            speaker: "Sinta",
+            text: "Karena... aku tidak mau kamu memperlakukanku berbeda. Aku mau kamu melihatku sebagai Sinta biasa.",
+            characters: ["rifky_sad", "sinta_sad"]
+          },
+          {
+            background: "park",
+            speaker: "Rifky",
+            text: "Sinta... (menggenggam tangannya erat)",
+            characters: ["rifky_sad", "sinta_sad"]
+          },
+          {
+            background: "park",
+            speaker: "Rifky",
+            text: "Aku... aku tetap di sini. Apapun yang terjadi, aku akan ada di sampingmu.",
+            characters: ["rifky_determined", "sinta_blush"]
+          },
+          {
+            background: "park",
+            speaker: "Sinta",
+            text: "(Air mata mengalir) Rifky...",
+            characters: ["rifky_determined", "sinta_sad"]
+          },
+          {
+            background: "park",
+            speaker: "Rifky",
+            text: "Kita hadapi ini bersama. Oke?",
+            characters: ["rifky_smile", "sinta_smile"]
+          },
+          {
+            background: "park",
+            speaker: "Narrator",
+            text: "Sinta menangis dalam pelukan Rifky. Untuk pertama kalinya, dia menunjukkan sisi lemahnya.",
+            characters: ["rifky_blush", "sinta_sad"]
+          },
+          {
+            background: "park",
+            speaker: "Sinta",
+            text: "(Berbisik) Terima kasih... terima kasih sudah ada untukku.",
+            characters: ["rifky_blush", "sinta_smile"]
+          }
+        ]
+      },
+      
+      // ========== CHAPTER 8: Pengakuan ==========
+      8: {
+        title: "Pengakuan",
+        subtitle: "Kata-kata yang selama ini tersimpan",
+        scenes: [
+          {
+            background: "sunset",
+            speaker: "Narrator",
+            text: "Setelah mengetahui rahasia Sinta, Rifky semakin bertekad untuk selalu ada di sampingnya. Dia memutuskan untuk menyatakan perasaannya.",
+            characters: ["rifky_determined"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "Sinta... ada yang mau aku bicarakan.",
+            characters: ["rifky_nervous", "sinta_normal"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "Apa?",
+            characters: ["rifky_nervous", "sinta_normal"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "(Menarik napas dalam) Sinta... aku... aku suka kamu.",
+            characters: ["rifky_blush", "sinta_shocked"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "...Eh?",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "Bukan suka sebagai teman. Aku... cinta kamu, Sinta.",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "Aku tau aku bodoh. Aku tau aku nggak sempurna. Tapi perasaanku ini... nyata.",
+            characters: ["rifky_determined", "sinta_blush"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "Rifky... aku...",
+            characters: ["rifky_nervous", "sinta_blush"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "Aku... juga. Aku juga suka kamu, Rifky.",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "B-benarkah?! Kamu serius?!",
+            characters: ["rifky_happy", "sinta_smile"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "(Tersenyum malu) Iya, bodoh. Aku suka kamu dari lama.",
+            characters: ["rifky_happy", "sinta_blush"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "Sinta... (menggenggam tangannya) Mau jadi pacarku?",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "...Iya. Mau.",
+            characters: ["rifky_happy", "sinta_happy"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Narrator",
+            text: "Di bawah langit senja yang berwarna oranye keemasan, dua hati akhirnya bersatu.",
+            characters: ["rifky_happy", "sinta_happy"]
+          },
+          {
+            background: "sunset",
+            speaker: "Narrator",
+            text: "Rifky dan Sinta... resmi menjadi sepasang kekasih.",
+            characters: ["rifky_happy", "sinta_happy"]
+          }
+        ]
+      },
+      
+      // ========== CHAPTER 9: Hari-hari Indah ==========
+      9: {
+        title: "Hari-hari Indah",
+        subtitle: "Momen bahagia berdua",
+        scenes: [
+          {
+            background: "park",
+            speaker: "Narrator",
+            text: "Sejak resmi berpacaran, Rifky dan Sinta menghabiskan banyak waktu bersama.",
+            characters: ["rifky_happy", "sinta_happy"]
+          },
+          {
+            background: "park",
+            speaker: "Rifky",
+            text: "Sinta, aku buatkan gambar untukmu!",
+            characters: ["rifky_happy", "sinta_smile"]
+          },
+          {
+            background: "park",
+            speaker: "Sinta",
+            text: "Wah! Ini... gambar kita berdua?",
+            characters: ["rifky_blush", "sinta_happy"]
+          },
+          {
+            background: "park",
+            speaker: "Rifky",
+            text: "Iya! Aku gambar kita di rooftop, tempat pertama kita ngobrol dengan serius.",
+            characters: ["rifky_happy", "sinta_blush"]
+          },
+          {
+            background: "park",
+            speaker: "Sinta",
+            text: "(Memeluk Rifky) Terima kasih... aku sayang kamu.",
+            characters: ["rifky_blush", "sinta_happy"]
+          },
+          {
+            background: "canteen",
+            speaker: "Dimas",
+            text: "CIEEEE yang lagi pacaran! Mesra banget!",
+            characters: ["rifky_panic", "sinta_blush"]
+          },
+          {
+            background: "canteen",
+            speaker: "Rifky",
+            text: "Berisik kamu, Dim!",
+            characters: ["rifky_panic", "sinta_smile"]
+          },
+          {
+            background: "canteen",
+            speaker: "Sinta",
+            text: "(Tertawa) Biarkan saja, Rifky.",
+            characters: ["rifky_blush", "sinta_happy"]
+          },
+          {
+            background: "beach",
+            speaker: "Narrator",
+            text: "Mereka juga pergi berlibur ke pantai saat liburan semester.",
+            characters: ["rifky_happy", "sinta_happy"]
+          },
+          {
+            background: "beach",
+            speaker: "Rifky",
+            text: "Sinta! Lihat, matahari terbenamnya indah banget!",
+            characters: ["rifky_happy", "sinta_smile"]
+          },
+          {
+            background: "beach",
+            speaker: "Sinta",
+            text: "Iya... tapi yang paling indah itu kamu.",
+            characters: ["rifky_blush", "sinta_smile"]
+          },
+          {
+            background: "beach",
+            speaker: "Rifky",
+            text: "(Wajah merah) S-Sinta! Kok aku yang digombalin?!",
+            characters: ["rifky_blush", "sinta_happy"]
+          },
+          {
+            background: "beach",
+            speaker: "Narrator",
+            text: "Mereka tertawa bersama, menikmati setiap momen kebersamaan.",
+            characters: ["rifky_happy", "sinta_happy"]
+          },
+          {
+            background: "library",
+            speaker: "Narrator",
+            text: "Sinta juga terus membantu Rifky belajar. Nilainya semakin membaik.",
+            characters: ["rifky_smile", "sinta_smile"]
+          },
+          {
+            background: "library",
+            speaker: "Rifky",
+            text: "Sinta, aku dapat nilai 85 di matematika!",
+            characters: ["rifky_happy", "sinta_happy"]
+          },
+          {
+            background: "library",
+            speaker: "Sinta",
+            text: "Wah! Aku bangga sama kamu, Rifky!",
+            characters: ["rifky_happy", "sinta_happy"]
+          },
+          {
+            background: "library",
+            speaker: "Rifky",
+            text: "Ini semua berkat kamu. Terima kasih sudah percaya padaku.",
+            characters: ["rifky_blush", "sinta_blush"]
+          }
+        ]
+      },
+      
+      // ========== CHAPTER 10: Badai Datang ==========
+      10: {
+        title: "Badai Datang",
+        subtitle: "Ketika kebahagiaan terusik",
+        scenes: [
+          {
+            background: "rain",
+            speaker: "Narrator",
+            text: "Tapi kebahagiaan tidak selamanya berlangsung. Kondisi kesehatan Sinta mulai memburuk.",
+            characters: []
+          },
+          {
+            background: "classroom",
+            speaker: "Teman",
+            text: "Rifky! Sinta pingsan di kelas!",
+            characters: ["rifky_shocked"]
+          },
+          {
+            background: "classroom",
+            speaker: "Rifky",
+            text: "APA?!",
+            characters: ["rifky_panic"]
+          },
+          {
+            background: "hospital",
+            speaker: "Narrator",
+            text: "Rifky berlari ke rumah sakit secepat mungkin.",
+            characters: ["rifky_panic"]
+          },
+          {
+            background: "hospital",
+            speaker: "Dokter",
+            text: "Kondisinya memburuk. Dia perlu operasi secepatnya.",
+            characters: ["rifky_sad"]
+          },
+          {
+            background: "hospital",
+            speaker: "Rifky",
+            text: "Operasi?! T-tapi...",
+            characters: ["rifky_sad"]
+          },
+          {
+            background: "hospital",
+            speaker: "Dokter",
+            text: "Operasinya berisiko tinggi. Tapi tanpa operasi... waktunya tidak lama lagi.",
+            characters: ["rifky_sad"]
+          },
+          {
+            background: "hospital",
+            speaker: "Rifky",
+            text: "(Air mata mengalir) Sinta...",
+            characters: ["rifky_sad"]
+          },
+          {
+            background: "hospital",
+            speaker: "Narrator",
+            text: "Rifky masuk ke kamar Sinta. Dia terlihat sangat pucat di atas tempat tidur.",
+            characters: ["rifky_sad", "sinta_sad"]
+          },
+          {
+            background: "hospital",
+            speaker: "Sinta",
+            text: "(Tersenyum lemah) Rifky... kamu datang.",
+            characters: ["rifky_sad", "sinta_smile"]
+          },
+          {
+            background: "hospital",
+            speaker: "Rifky",
+            text: "(Menggenggam tangannya) Tentu aku datang. Aku akan selalu ada.",
+            characters: ["rifky_sad", "sinta_smile"]
+          },
+          {
+            background: "hospital",
+            speaker: "Sinta",
+            text: "Rifky... aku takut.",
+            characters: ["rifky_sad", "sinta_sad"]
+          },
+          {
+            background: "hospital",
+            speaker: "Rifky",
+            text: "Kamu pasti bisa. Kamu orang terkuat yang aku kenal.",
+            characters: ["rifky_determined", "sinta_sad"]
+          },
+          {
+            background: "hospital",
+            speaker: "Sinta",
+            text: "Bagaimana kalau... aku tidak berhasil?",
+            characters: ["rifky_sad", "sinta_sad"]
+          },
+          {
+            background: "hospital",
+            speaker: "Rifky",
+            text: "JANGAN BILANG BEGITU! Kamu harus sembuh! Kita masih punya banyak waktu bersama!",
+            characters: ["rifky_angry", "sinta_sad"]
+          },
+          {
+            background: "hospital",
+            speaker: "Sinta",
+            text: "(Tersenyum) Kamu benar... maaf. Aku akan berjuang.",
+            characters: ["rifky_sad", "sinta_smile"]
+          },
+          {
+            background: "hospital",
+            speaker: "Rifky",
+            text: "Aku akan menunggumu. Sampai kapanpun.",
+            characters: ["rifky_determined", "sinta_smile"]
+          }
+        ]
+      },
+      
+      // ========== CHAPTER 11: Operasi ==========
+      11: {
+        title: "Operasi",
+        subtitle: "Pertarungan hidup dan mati",
+        scenes: [
+          {
+            background: "hospital",
+            speaker: "Narrator",
+            text: "Hari operasi tiba. Rifky menunggu di luar ruang operasi dengan gelisah.",
+            characters: ["rifky_sad"]
+          },
+          {
+            background: "hospital",
+            speaker: "Rifky",
+            text: "(Berdoa) Tuhan, kumohon... selamatkan Sinta.",
+            characters: ["rifky_sad"]
+          },
+          {
+            background: "hospital",
+            speaker: "Narrator",
+            text: "Jam-jam berlalu terasa seperti keabadian. Rifky tidak beranjak dari tempatnya.",
+            characters: ["rifky_sad"]
+          },
+          {
+            background: "hospital",
+            speaker: "Dimas",
+            text: "Bro, kamu harus makan. Sudah dari pagi kamu di sini.",
+            characters: ["rifky_sad"]
+          },
+          {
+            background: "hospital",
+            speaker: "Rifky",
+            text: "Aku tidak bisa. Tidak sebelum aku tau Sinta baik-baik saja.",
+            characters: ["rifky_determined"]
+          },
+          {
+            background: "hospital",
+            speaker: "Narrator",
+            text: "Akhirnya, setelah 6 jam, lampu ruang operasi mati. Dokter keluar.",
+            characters: ["rifky_nervous"]
+          },
+          {
+            background: "hospital",
+            speaker: "Rifky",
+            text: "Dokter! Bagaimana?!",
+            characters: ["rifky_nervous"]
+          },
+          {
+            background: "hospital",
+            speaker: "Dokter",
+            text: "...Operasinya berhasil. Dia selamat.",
+            characters: ["rifky_happy"]
+          },
+          {
+            background: "hospital",
+            speaker: "Rifky",
+            text: "(Jatuh berlutut) Terima kasih... terima kasih Tuhan...",
+            characters: ["rifky_happy"]
+          },
+          {
+            background: "hospital",
+            speaker: "Narrator",
+            text: "Air mata kebahagiaan mengalir di wajah Rifky. Sinta selamat.",
+            characters: ["rifky_happy"]
+          }
+        ]
+      },
+      
+      // ========== CHAPTER 12: Pemulihan ==========
+      12: {
+        title: "Pemulihan",
+        subtitle: "Bersama melewati masa sulit",
+        scenes: [
+          {
+            background: "hospital",
+            speaker: "Narrator",
+            text: "Setelah operasi, Sinta harus menjalani masa pemulihan yang panjang. Rifky setia menemaninya setiap hari.",
+            characters: ["rifky_smile", "sinta_smile"]
+          },
+          {
+            background: "hospital",
+            speaker: "Rifky",
+            text: "Sinta, aku bawakan bunga! Dan komik yang kamu suka!",
+            characters: ["rifky_happy", "sinta_smile"]
+          },
+          {
+            background: "hospital",
+            speaker: "Sinta",
+            text: "(Tertawa kecil) Rifky, kamu tidak perlu datang setiap hari. Bagaimana sekolahmu?",
+            characters: ["rifky_smile", "sinta_smile"]
+          },
+          {
+            background: "hospital",
+            speaker: "Rifky",
+            text: "Aku belajar di sini! Sambil menemanimu!",
+            characters: ["rifky_happy", "sinta_blush"]
+          },
+          {
+            background: "hospital",
+            speaker: "Sinta",
+            text: "Dasar... (tersenyum) Tapi... terima kasih.",
+            characters: ["rifky_blush", "sinta_smile"]
+          },
+          {
+            background: "hospital",
+            speaker: "Narrator",
+            text: "Minggu demi minggu berlalu. Kondisi Sinta membaik secara perlahan.",
+            characters: ["rifky_smile", "sinta_smile"]
+          },
+          {
+            background: "hospital",
+            speaker: "Dokter",
+            text: "Kabar baik, Sinta. Minggu depan kamu boleh pulang.",
+            characters: ["rifky_happy", "sinta_happy"]
+          },
+          {
+            background: "hospital",
+            speaker: "Rifky",
+            text: "YES! Akhirnya!",
+            characters: ["rifky_happy", "sinta_happy"]
+          },
+          {
+            background: "hospital",
+            speaker: "Sinta",
+            text: "Rifky... ada yang mau aku bilang.",
+            characters: ["rifky_normal", "sinta_blush"]
+          },
+          {
+            background: "hospital",
+            speaker: "Rifky",
+            text: "Apa?",
+            characters: ["rifky_normal", "sinta_blush"]
+          },
+          {
+            background: "hospital",
+            speaker: "Sinta",
+            text: "Selama di rumah sakit... aku banyak berpikir. Tentang hidup, tentang kita.",
+            characters: ["rifky_normal", "sinta_smile"]
+          },
+          {
+            background: "hospital",
+            speaker: "Sinta",
+            text: "Aku bersyukur... kamu ada dalam hidupku, Rifky.",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "hospital",
+            speaker: "Rifky",
+            text: "Sinta... aku juga. Kamu adalah hal terbaik yang pernah terjadi padaku.",
+            characters: ["rifky_blush", "sinta_smile"]
+          }
+        ]
+      },
+      
+      // ========== CHAPTER 13: Kembali ke Sekolah ==========
+      13: {
+        title: "Kembali ke Sekolah",
+        subtitle: "Langkah baru bersama",
+        scenes: [
+          {
+            background: "school_gate",
+            speaker: "Narrator",
+            text: "Sinta akhirnya kembali ke sekolah. Semua orang menyambutnya dengan hangat.",
+            characters: ["rifky_happy", "sinta_happy"]
+          },
+          {
+            background: "school_gate",
+            speaker: "Teman-teman",
+            text: "SINTA! Selamat datang kembali!",
+            characters: ["rifky_happy", "sinta_happy"]
+          },
+          {
+            background: "school_gate",
+            speaker: "Sinta",
+            text: "Terima kasih semuanya... aku merindukan kalian.",
+            characters: ["rifky_smile", "sinta_happy"]
+          },
+          {
+            background: "hallway",
+            speaker: "Rifky",
+            text: "(Menggenggam tangan Sinta) Bagaimana rasanya kembali?",
+            characters: ["rifky_smile", "sinta_smile"]
+          },
+          {
+            background: "hallway",
+            speaker: "Sinta",
+            text: "Senang... sangat senang. Apalagi karena kamu di sampingku.",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Narrator",
+            text: "Mereka berdua pergi ke rooftop, tempat spesial mereka.",
+            characters: ["rifky_smile", "sinta_smile"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "Rifky... lihat, langitnya cerah sekali hari ini.",
+            characters: ["rifky_smile", "sinta_happy"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "Iya. Sama seperti perasaanku sekarang.",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "Cheesy~",
+            characters: ["rifky_blush", "sinta_smile"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "Hehe. Tapi beneran kok!",
+            characters: ["rifky_happy", "sinta_happy"]
+          }
+        ]
+      },
+      
+      // ========== CHAPTER 14: Menjelang Perpisahan ==========
+      14: {
+        title: "Menjelang Perpisahan",
+        subtitle: "Saat yang tak terelakkan",
+        scenes: [
+          {
+            background: "classroom",
+            speaker: "Narrator",
+            text: "Waktu berlalu dengan cepat. Tanpa terasa, Sinta akan segera lulus.",
+            characters: ["rifky_sad"]
+          },
+          {
+            background: "classroom",
+            speaker: "Sinta",
+            text: "Rifky... sebentar lagi aku lulus.",
+            characters: ["rifky_sad", "sinta_sad"]
+          },
+          {
+            background: "classroom",
+            speaker: "Rifky",
+            text: "Iya... aku tau.",
+            characters: ["rifky_sad", "sinta_sad"]
+          },
+          {
+            background: "classroom",
+            speaker: "Sinta",
+            text: "Aku diterima di universitas di luar kota.",
+            characters: ["rifky_shocked", "sinta_sad"]
+          },
+          {
+            background: "classroom",
+            speaker: "Rifky",
+            text: "L-luar kota?!",
+            characters: ["rifky_shocked", "sinta_sad"]
+          },
+          {
+            background: "classroom",
+            speaker: "Sinta",
+            text: "Iya... jauh dari sini.",
+            characters: ["rifky_sad", "sinta_sad"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Narrator",
+            text: "Mereka berdua pergi ke rooftop untuk berbicara.",
+            characters: ["rifky_sad", "sinta_sad"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "Sinta... apa ini artinya... kita putus?",
+            characters: ["rifky_sad", "sinta_shocked"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "Rifky! Tentu tidak! Kamu pikir aku akan menyerah semudah itu?",
+            characters: ["rifky_shocked", "sinta_angry"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "T-tapi jarak...",
+            characters: ["rifky_sad", "sinta_smile"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "Jarak bukan apa-apa kalau kita saling percaya. Iya kan?",
+            characters: ["rifky_blush", "sinta_smile"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "(Tersenyum) Iya. Kamu benar.",
+            characters: ["rifky_smile", "sinta_smile"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Sinta",
+            text: "Lagipula... kamu harus fokus belajar. Aku mau kamu lulus dengan nilai bagus!",
+            characters: ["rifky_determined", "sinta_smile"]
+          },
+          {
+            background: "rooftop",
+            speaker: "Rifky",
+            text: "Baik! Aku janji!",
+            characters: ["rifky_determined", "sinta_happy"]
+          }
+        ]
+      },
+      
+      // ========== CHAPTER 15: Perpisahan dan Janji ==========
+      15: {
+        title: "Perpisahan dan Janji",
+        subtitle: "Sampai jumpa lagi...",
+        scenes: [
+          {
+            background: "graduation",
+            speaker: "Narrator",
+            text: "Hari kelulusan tiba. SMA Negeri 1 dihiasi dengan dekorasi kelulusan yang meriah.",
+            characters: []
+          },
+          {
+            background: "graduation",
+            speaker: "Narrator",
+            text: "Sinta berdiri di panggung, menerima ijazahnya dengan senyum bangga.",
+            characters: ["sinta_happy"]
+          },
+          {
+            background: "graduation",
+            speaker: "Rifky",
+            text: "(Dari penonton) SINTA! SEMANGAT!",
+            characters: ["rifky_happy", "sinta_blush"]
+          },
+          {
+            background: "graduation",
+            speaker: "Narrator",
+            text: "Setelah upacara selesai, Rifky dan Sinta bertemu di taman sekolah.",
+            characters: ["rifky_smile", "sinta_smile"]
+          },
+          {
+            background: "park",
+            speaker: "Rifky",
+            text: "Selamat ya, Sinta. Kamu memang yang terbaik.",
+            characters: ["rifky_smile", "sinta_smile"]
+          },
+          {
+            background: "park",
+            speaker: "Sinta",
+            text: "Terima kasih, Rifky. Ini semua juga berkat dukunganmu.",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "park",
+            speaker: "Rifky",
+            text: "Sinta... aku punya sesuatu untukmu.",
+            characters: ["rifky_nervous", "sinta_normal"]
+          },
+          {
+            background: "park",
+            speaker: "Narrator",
+            text: "Rifky mengeluarkan sebuah lukisan. Lukisan Sinta dengan latar belakang langit senja.",
+            characters: ["rifky_blush", "sinta_shocked"]
+          },
+          {
+            background: "park",
+            speaker: "Sinta",
+            text: "Rifky... ini... indah sekali...",
+            characters: ["rifky_blush", "sinta_happy"]
+          },
+          {
+            background: "park",
+            speaker: "Rifky",
+            text: "Aku menggambarnya dengan segenap hatiku. Supaya kamu selalu ingat aku.",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "park",
+            speaker: "Sinta",
+            text: "(Memeluk Rifky) Bodoh... mana mungkin aku lupa.",
+            characters: ["rifky_blush", "sinta_happy"]
+          },
+          {
+            background: "sunset",
+            speaker: "Narrator",
+            text: "Mereka berdiri bersama, memandang matahari terbenam untuk terakhir kalinya sebagai siswa SMA.",
+            characters: ["rifky_smile", "sinta_smile"]
+          },
+          {
+            background: "sunset",
+            speaker: "Sinta",
+            text: "Rifky... kita akan bertemu lagi kan?",
+            characters: ["rifky_smile", "sinta_smile"]
+          },
+          {
+            background: "sunset",
+            speaker: "Rifky",
+            text: "Tentu. Aku janji.",
+            characters: ["rifky_determined", "sinta_smile"]
+          },
+          {
+            background: "sunset",
+            speaker: "Sinta",
+            text: "Aku akan menunggumu. Sampai kapanpun.",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "sunset",
+            speaker: "Rifky",
+            text: "Dan aku... akan terus mencintaimu. Sampai kapanpun.",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "sunset",
+            speaker: "Narrator",
+            text: "Mereka berciuman di bawah langit senja yang berwarna keemasan. Sebuah janji cinta yang abadi.",
+            characters: ["rifky_blush", "sinta_blush"]
+          },
+          {
+            background: "sunset",
+            speaker: "Narrator",
+            text: "Kisah cinta Rifky dan Sinta di SMA Negeri 1... berakhir di sini. Tapi cinta mereka... akan terus berlanjut selamanya.",
+            characters: ["rifky_happy", "sinta_happy"]
+          },
+          {
+            background: "sunset",
+            speaker: "Narrator",
+            text: "~ The End ~",
+            characters: []
+          }
+        ]
+      }
+    };
+    
+    // Total scenes count for progress calculation
+    let totalScenes = 0;
+    let currentSceneIndex = 0;
+    Object.keys(storyData).forEach(chapter => {
+      totalScenes += storyData[chapter].scenes.length;
+    });
+    
+    // ==================== CHARACTER SPRITES ====================
+    function getCharacterSprite(type) {
+      const sprites = {
+        // Rifky expressions
+        rifky_normal: { emoji: "😊", color: "from-blue-400 to-blue-600", name: "Rifky" },
+        rifky_happy: { emoji: "😄", color: "from-blue-400 to-blue-600", name: "Rifky" },
+        rifky_sad: { emoji: "😢", color: "from-blue-400 to-blue-600", name: "Rifky" },
+        rifky_angry: { emoji: "😠", color: "from-blue-400 to-blue-600", name: "Rifky" },
+        rifky_blush: { emoji: "😳", color: "from-blue-400 to-blue-600", name: "Rifky" },
+        rifky_shocked: { emoji: "😱", color: "from-blue-400 to-blue-600", name: "Rifky" },
+        rifky_thinking: { emoji: "🤔", color: "from-blue-400 to-blue-600", name: "Rifky" },
+        rifky_panic: { emoji: "😰", color: "from-blue-400 to-blue-600", name: "Rifky" },
+        rifky_nervous: { emoji: "😅", color: "from-blue-400 to-blue-600", name: "Rifky" },
+        rifky_determined: { emoji: "😤", color: "from-blue-400 to-blue-600", name: "Rifky" },
+        rifky_smile: { emoji: "😊", color: "from-blue-400 to-blue-600", name: "Rifky" },
+        rifky_confused: { emoji: "😕", color: "from-blue-400 to-blue-600", name: "Rifky" },
+        
+        // Sinta expressions
+        sinta_normal: { emoji: "🙂", color: "from-pink-400 to-rose-500", name: "Sinta" },
+        sinta_happy: { emoji: "😊", color: "from-pink-400 to-rose-500", name: "Sinta" },
+        sinta_sad: { emoji: "😢", color: "from-pink-400 to-rose-500", name: "Sinta" },
+        sinta_angry: { emoji: "😤", color: "from-pink-400 to-rose-500", name: "Sinta" },
+        sinta_blush: { emoji: "😳", color: "from-pink-400 to-rose-500", name: "Sinta" },
+        sinta_shocked: { emoji: "😲", color: "from-pink-400 to-rose-500", name: "Sinta" },
+        sinta_smile: { emoji: "😊", color: "from-pink-400 to-rose-500", name: "Sinta" },
+        sinta_panic: { emoji: "😰", color: "from-pink-400 to-rose-500", name: "Sinta" },
+        sinta_confused: { emoji: "😕", color: "from-pink-400 to-rose-500", name: "Sinta" }
+      };
+      return sprites[type] || { emoji: "👤", color: "from-gray-400 to-gray-600", name: "???" };
+    }
+    
+    // ==================== SAKURA PARTICLES ====================
+    function createSakura(container) {
+      const sakura = document.createElement('div');
+      sakura.className = 'sakura';
+      sakura.style.left = Math.random() * 100 + '%';
+      sakura.style.animationDuration = (Math.random() * 3 + 4) + 's';
+      sakura.style.animationDelay = Math.random() * 5 + 's';
+      sakura.style.opacity = Math.random() * 0.5 + 0.5;
+      sakura.style.transform = `scale(${Math.random() * 0.5 + 0.5})`;
+      container.appendChild(sakura);
+      
+      setTimeout(() => sakura.remove(), 10000);
+    }
+    
+    function startSakuraAnimation() {
+      const container = document.getElementById('sakuraContainer');
+      if (!container) return;
+      
+      setInterval(() => {
+        if (document.getElementById('titleScreen').classList.contains('hidden')) return;
+        createSakura(container);
+      }, 300);
+    }
+    
+    // ==================== MUSIC CONTROL ====================
+    function toggleMusic() {
+      const music = document.getElementById('bgMusic');
+      const icon = document.getElementById('musicIcon');
+      
+      if (gameState.musicPlaying) {
+        music.pause();
+        icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>';
+      } else {
+        music.play().catch(e => console.log('Audio play failed:', e));
+        icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>';
+      }
+      gameState.musicPlaying = !gameState.musicPlaying;
+    }
+    
+    // ==================== GAME FUNCTIONS ====================
+    function startGame() {
+      document.getElementById('titleScreen').classList.add('hidden');
+      document.getElementById('gameScreen').classList.remove('hidden');
+      
+      gameState.chapter = 1;
+      gameState.scene = 0;
+      currentSceneIndex = 0;
+      
+      showChapterTitle(1);
+    }
+    
+    function showChapterTitle(chapter) {
+      const overlay = document.getElementById('chapterOverlay');
+      const title = document.getElementById('chapterTitle');
+      const subtitle = document.getElementById('chapterSubtitle');
+      
+      title.textContent = storyData[chapter].title;
+      subtitle.textContent = storyData[chapter].subtitle;
+      
+      overlay.classList.remove('hidden');
+      
+      setTimeout(() => {
+        overlay.classList.add('hidden');
+        showScene();
+      }, 3000);
+    }
+    
+    function showScene() {
+      const chapter = storyData[gameState.chapter];
+      if (!chapter) {
+        showEnding();
+        return;
+      }
+      
+      const scene = chapter.scenes[gameState.scene];
+      if (!scene) {
+        // Next chapter
+        gameState.chapter++;
+        gameState.scene = 0;
+        
+        if (storyData[gameState.chapter]) {
+          showChapterTitle(gameState.chapter);
+        } else {
+          showEnding();
+        }
+        return;
+      }
+      
+      // Update progress bar
+      updateProgress();
+      
+      // Update background
+      const bg = document.getElementById('sceneBackground');
+      bg.style.background = backgrounds[scene.background] || backgrounds.school_gate;
+      
+      // Update characters
+      updateCharacters(scene.characters);
+      
+      // Update speaker name
+      const speakerEl = document.getElementById('speakerName');
+      speakerEl.textContent = scene.speaker;
+      
+      // Color speaker name based on who's talking
+      if (scene.speaker === "Rifky") {
+        speakerEl.className = "absolute -top-4 left-6 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-1 rounded-full font-bold text-lg shadow-lg";
+      } else if (scene.speaker === "Sinta") {
+        speakerEl.className = "absolute -top-4 left-6 bg-gradient-to-r from-pink-500 to-rose-500 text-white px-6 py-1 rounded-full font-bold text-lg shadow-lg";
+      } else {
+        speakerEl.className = "absolute -top-4 left-6 bg-gradient-to-r from-gray-500 to-gray-600 text-white px-6 py-1 rounded-full font-bold text-lg shadow-lg";
+      }
+      
+      // Type text effect
+      typeText(scene.text);
+    }
+    
+    function updateCharacters(characters) {
+      const container = document.getElementById('charactersContainer');
+      container.innerHTML = '';
+      
+      characters.forEach((charType, index) => {
+        const sprite = getCharacterSprite(charType);
+        const charDiv = document.createElement('div');
+        charDiv.className = `text-center mx-4 ${index === 0 ? 'char-left' : 'char-right'}`;
+        charDiv.innerHTML = `
+          <div class="w-24 h-24 md:w-32 md:h-32 rounded-full bg-gradient-to-br ${sprite.color} flex items-center justify-center text-5xl md:text-6xl shadow-xl character-sprite float-animation">
+            ${sprite.emoji}
+          </div>
+          <p class="mt-2 font-bold ${sprite.name === 'Rifky' ? 'text-blue-600' : 'text-pink-600'} text-lg">${sprite.name}</p>
+        `;
+        container.appendChild(charDiv);
+      });
+    }
+    
+    function typeText(text) {
+      const textEl = document.getElementById('dialogueText');
+      const continueEl = document.getElementById('continueIndicator');
+      
+      gameState.isTyping = true;
+      gameState.currentText = text;
+      gameState.textIndex = 0;
+      
+      textEl.textContent = '';
+      continueEl.classList.add('hidden');
+      
+      function type() {
+        if (gameState.textIndex < gameState.currentText.length) {
+          textEl.textContent += gameState.currentText[gameState.textIndex];
+          gameState.textIndex++;
+          setTimeout(type, 30);
+        } else {
+          gameState.isTyping = false;
+          continueEl.classList.remove('hidden');
+        }
+      }
+      
+      type();
+    }
+    
+    function skipText() {
+      if (gameState.isTyping) {
+        const textEl = document.getElementById('dialogueText');
+        const continueEl = document.getElementById('continueIndicator');
+        
+        textEl.textContent = gameState.currentText;
+        gameState.isTyping = false;
+        continueEl.classList.remove('hidden');
+      }
+    }
+    
+    function nextScene() {
+      if (gameState.isTyping) {
+        skipText();
+        return;
+      }
+      
+      gameState.scene++;
+      currentSceneIndex++;
+      showScene();
+    }
+    
+    function updateProgress() {
+      const progress = (currentSceneIndex / totalScenes) * 100;
+      document.getElementById('progressBar').style.width = progress + '%';
+    }
+    
+    function showEnding() {
+      document.getElementById('gameScreen').classList.add('hidden');
+      document.getElementById('endingScreen').classList.remove('hidden');
+      document.getElementById('endingScreen').classList.add('flex');
+      
+      document.getElementById('endingText').textContent = 
+        "Terima kasih telah membaca kisah cinta Rifky dan Sinta. Semoga cerita ini menyentuh hatimu! 💕";
+      
+      // Start sakura in ending
+      const container = document.getElementById('sakuraEndContainer');
+      setInterval(() => {
+        createSakura(container);
+      }, 300);
+    }
+    
+    function restartGame() {
+      document.getElementById('endingScreen').classList.add('hidden');
+      document.getElementById('endingScreen').classList.remove('flex');
+      document.getElementById('titleScreen').classList.remove('hidden');
+      
+      gameState.chapter = 1;
+      gameState.scene = 0;
+      gameState.affection = 50;
+      currentSceneIndex = 0;
+    }
+    
+    // ==================== SAVE/LOAD ====================
+    async function saveGame() {
+      const saveData = {
+        save_slot: 'slot_1',
+        chapter: gameState.chapter,
+        scene: gameState.scene,
+        player_name: 'Player',
+        affection: gameState.affection,
+        choices_made: JSON.stringify(gameState.choicesMade),
+        saved_at: new Date().toISOString()
+      };
+      
+      if (window.dataSdk) {
+        const existing = saves.find(s => s.save_slot === 'slot_1');
+        if (existing) {
+          const result = await window.dataSdk.update({ ...existing, ...saveData });
+          if (result.isOk) showNotification('Game tersimpan!');
+        } else {
+          const result = await window.dataSdk.create(saveData);
+          if (result.isOk) showNotification('Game tersimpan!');
+        }
+      }
+    }
+    
+    async function loadGame(save) {
+      gameState.chapter = save.chapter;
+      gameState.scene = save.scene;
+      gameState.affection = save.affection;
+      gameState.choicesMade = JSON.parse(save.choices_made || '[]');
+      
+      // Calculate current scene index
+      currentSceneIndex = 0;
+      for (let i = 1; i < save.chapter; i++) {
+        if (storyData[i]) currentSceneIndex += storyData[i].scenes.length;
+      }
+      currentSceneIndex += save.scene;
+      
+      hideLoadMenu();
+      document.getElementById('titleScreen').classList.add('hidden');
+      document.getElementById('gameScreen').classList.remove('hidden');
+      showScene();
+      showNotification('Game dimuat!');
+    }
+    
+    function showLoadMenu() {
+      const menu = document.getElementById('loadMenu');
+      const slots = document.getElementById('saveSlots');
+      
+      slots.innerHTML = '';
+      
+      if (saves.length === 0) {
+        slots.innerHTML = '<p class="text-center text-gray-500">Belum ada save data</p>';
+      } else {
+        saves.forEach(save => {
+          const chapter = storyData[save.chapter];
+          const btn = document.createElement('button');
+          btn.className = 'w-full bg-gradient-to-r from-pink-100 to-rose-100 p-4 rounded-xl text-left hover:from-pink-200 hover:to-rose-200 transition-all';
+          btn.innerHTML = `
+            <p class="font-bold text-pink-600">Chapter ${save.chapter}: ${chapter ? chapter.title : 'Unknown'}</p>
+            <p class="text-sm text-gray-500">Scene ${save.scene + 1} | ${new Date(save.saved_at).toLocaleDateString('id-ID')}</p>
+          `;
+          btn.onclick = () => loadGame(save);
+          slots.appendChild(btn);
+        });
+      }
+      
+      menu.classList.remove('hidden');
+    }
+    
+    function hideLoadMenu() {
+      document.getElementById('loadMenu').classList.add('hidden');
+    }
+    
+    function showNotification(text) {
+      const notif = document.getElementById('notification');
+      notif.textContent = text;
+      notif.classList.remove('hidden');
+      
+      setTimeout(() => {
+        notif.classList.add('hidden');
+      }, 2000);
+    }
+    
+    // ==================== EVENT LISTENERS ====================
+    document.getElementById('dialogueBox').addEventListener('click', nextScene);
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' || e.code === 'Enter') {
+        nextScene();
+      }
+    });
+    
+    // ==================== SDK INITIALIZATION ====================
+    const dataHandler = {
+      onDataChanged(data) {
+        saves = data;
+      }
+    };
+    
+    async function initSDKs() {
+      // Initialize Element SDK
+      if (window.elementSdk) {
+        window.elementSdk.init({
+          defaultConfig,
+          onConfigChange: async (cfg) => {
+            config = cfg;
+            document.title = config.game_title || defaultConfig.game_title;
+          },
+          mapToCapabilities: (cfg) => ({
+            recolorables: [],
+            borderables: [],
+            fontEditable: undefined,
+            fontSizeable: undefined
+          }),
+          mapToEditPanelValues: (cfg) => new Map([
+            ["game_title", cfg.game_title || defaultConfig.game_title]
+          ])
+        });
+      }
+      
+      // Initialize Data SDK
+      if (window.dataSdk) {
+        await window.dataSdk.init(dataHandler);
+      }
+      
+      // Start animations
+      startSakuraAnimation();
+    }
+    
+    initSDKs();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d0bcd7c26704f85',t:'MTc3MTU2NzQyNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
